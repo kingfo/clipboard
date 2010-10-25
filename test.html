@@ -1,0 +1,332 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="gbk"/>
+		<title>Clipboard Test</title>
+	</head>
+	<body>
+		<h2>Clipboard test</h2>
+		<script src="../kissy/build/test/test.js"></script>
+		<script>KISSY.Test.Config.times = 1;</script>
+		
+		<script src="../kissy/build/kissy.js"></script>
+		<script src="../kissy/build/flash/flash-pkg.js"></script>
+		
+		
+		<script src="../kissy-ajbridge/build/ajbridge/ajbridge-pkg.js"></script>
+		
+		<script src="clipboard.js"></script>
+		
+		<style type="text/css">
+			
+			.box a{
+				text-decoration:none;
+				border:1px solid #eaeaea;
+			}
+			
+			.box li{
+				float:left;
+				margin:0 10px 0 0;
+				padding:0 5px;
+				
+			}
+			
+			li{
+				list-style:none;
+			}
+			
+			ul{
+			    padding:0;
+				margin:0;
+			}
+		</style>
+		
+		<p>Test</p>
+		<textarea id="inputArea"></textarea>
+		<ul class="box">
+			<li class="copy">
+				<i id="swfcopy"> </i>
+				<a href="#" class="copy_btn" id="J_CopyBtn">Copy</a> 
+			</li>
+			<li class="cut">
+				<i id="swfcut"> </i>
+				<a href="#" class="cut_btn" id="J_CutBtn">Cut</a> 
+			</li>
+			<li class="paste">
+				<i id="swfpaste"> </i>
+				<a href="#" class="paste_btn" id="J_PasteBtn">Paste</a> 
+			</li>
+			<li class="clear">
+				<i id="swfclear"> </i>
+				<a href="#" class="clear_btn" id="J_ClearBtn">Clear</a> 
+			</li>
+		</ul>
+		
+		<script>
+			var S=KISSY,
+				F = S.Flash,
+				T = S.Test,
+				A = AJBridge,
+				Clipboard = A.Clipboard,
+				defConfig = {
+					src:"clipboard.swf",
+					params:{
+						bgcolor:"#FFCCCC",
+						wmode:"opaque",
+						scale:"showall"
+					},
+					hand:true,
+					btn:true
+				};
+				
+			function test_createCopySWF(test){
+				var id = "swfcopy",
+					clipboard,
+					config = S.merge(defConfig,{
+					attrs:{
+						width:42,
+						height:20
+					},
+					data:"test_createCopySWF"
+				});
+				
+				clipboard = new Clipboard(id,config);
+				//TODO: add events
+				
+				// 1.添加常规 AJBridge 监听
+				// see  http://kissyteam.github.com/kissy-ajbridge/docs/ajbridge/index.html#events 
+				clipboard.on("init",function(ev){
+					test.echo('id: ' + ev.id,',type: ' + ev.type+"<br/>");
+				});
+				clipboard.on("addCallback",function(ev){
+					test.echo('id: ' + ev.id,',type: ' + ev.type+"<br/>");
+				});
+				clipboard.on("addCallbacks",function(ev){
+					test.echo('id: ' + ev.id,',type: ' + ev.type+"<br/>");
+				});
+				clipboard.on("swfReady",function(ev){
+					test.echo('id: ' + ev.id,',type: ' + ev.type+"<br/>");
+				});
+				// 2.添加常规 内容 监听
+				clipboard.on("contentReady",function(ev){
+					// flash 完成代码初始化
+					test.echo('id: ' + ev.id,',type: ' + ev.type+"<br/>");
+				});
+				clipboard.on("clipboardClear",function(ev){
+					// flash 选择了文件
+					test.echo('id: ' + ev.id,',type: ' + ev.type + "<br/>");
+					files=ev.fileList;
+				});
+				clipboard.on("clipboardSet",function(ev){
+					// flash 取消选择文件
+					test.echo('id: ' + ev.id,',type: ' + ev.type+", event:" + S.JSON.stringify(ev) +"<br/>");
+				});
+				// 3.添加鼠标事件 监听
+				clipboard.on("mouseOver",function(ev){
+					test.echo('id: ' + ev.id,',type: ' + ev.type +"<br/>");
+				});
+				clipboard.on("mouseDown",function(ev){
+					test.echo('id: ' + ev.id,',type: ' + ev.type+"<br/>");
+					//TODO: set data here
+					
+				});
+				clipboard.on("mouseUp",function(ev){
+					test.echo('id: ' + ev.id,',type: ' + ev.type+"<br/>");
+				});
+				clipboard.on("mouseOut",function(ev){
+					test.echo('id: ' + ev.id,',type: ' + ev.type+"<br/>");
+				});
+				clipboard.on("click",function(ev){
+					test.echo('id: ' + ev.id,',type: ' + ev.type+"<br/>");
+				});
+				// init clipboard after events
+				clipboard.init();
+			}
+			
+			function test_createCutSWF(test){
+				var id = "swfcut",
+					clipboard,
+					config = S.merge(defConfig,{
+					attrs:{
+						width:32,
+						height:20
+					},
+					data:"test_createCutSWF"
+				});
+				clipboard = new Clipboard(id,config);
+				//TODO: add events
+				// 1.添加常规 AJBridge 监听
+				// see  http://kissyteam.github.com/kissy-ajbridge/docs/ajbridge/index.html#events 
+				clipboard.on("init",function(ev){
+					test.echo('id: ' + ev.id,',type: ' + ev.type+"<br/>");
+				});
+				clipboard.on("addCallback",function(ev){
+					test.echo('id: ' + ev.id,',type: ' + ev.type+"<br/>");
+				});
+				clipboard.on("addCallbacks",function(ev){
+					test.echo('id: ' + ev.id,',type: ' + ev.type+"<br/>");
+				});
+				clipboard.on("swfReady",function(ev){
+					test.echo('id: ' + ev.id,',type: ' + ev.type+"<br/>");
+				});
+				// 2.添加常规 内容 监听
+				clipboard.on("contentReady",function(ev){
+					// flash 完成代码初始化
+					test.echo('id: ' + ev.id,',type: ' + ev.type+"<br/>");
+				});
+				clipboard.on("clipboardClear",function(ev){
+					// flash 选择了文件
+					test.echo('id: ' + ev.id,',type: ' + ev.type + "<br/>");
+					files=ev.fileList;
+				});
+				clipboard.on("clipboardSet",function(ev){
+					// flash 取消选择文件
+					test.echo('id: ' + ev.id,',type: ' + ev.type+", event:" + S.JSON.stringify(ev) +"<br/>");
+				});
+				// 3.添加鼠标事件 监听
+				clipboard.on("mouseOver",function(ev){
+					test.echo('id: ' + ev.id,',type: ' + ev.type +"<br/>");
+				});
+				clipboard.on("mouseDown",function(ev){
+					test.echo('id: ' + ev.id,',type: ' + ev.type+"<br/>");
+					//TODO: set data here
+					
+				});
+				clipboard.on("mouseUp",function(ev){
+					test.echo('id: ' + ev.id,',type: ' + ev.type+"<br/>");
+				});
+				clipboard.on("mouseOut",function(ev){
+					test.echo('id: ' + ev.id,',type: ' + ev.type+"<br/>");
+				});
+				clipboard.on("click",function(ev){
+					test.echo('id: ' + ev.id,',type: ' + ev.type+"<br/>");
+				});
+				// init clipboard after events
+				clipboard.init();
+			}
+			
+			function test_createPasteSWF(test){
+				var id = "swfpaste",
+					clipboard,
+					config = S.merge(defConfig,{
+					attrs:{
+						width:46,
+						height:20
+					}
+				});
+				clipboard = new Clipboard(id,config);
+				//TODO: add events
+				// 1.添加常规 AJBridge 监听
+				// see  http://kissyteam.github.com/kissy-ajbridge/docs/ajbridge/index.html#events 
+				clipboard.on("init",function(ev){
+					test.echo('id: ' + ev.id,',type: ' + ev.type+"<br/>");
+				});
+				clipboard.on("addCallback",function(ev){
+					test.echo('id: ' + ev.id,',type: ' + ev.type+"<br/>");
+				});
+				clipboard.on("addCallbacks",function(ev){
+					test.echo('id: ' + ev.id,',type: ' + ev.type+"<br/>");
+				});
+				clipboard.on("swfReady",function(ev){
+					test.echo('id: ' + ev.id,',type: ' + ev.type+"<br/>");
+				});
+				// 2.添加常规 内容 监听
+				clipboard.on("contentReady",function(ev){
+					// flash 完成代码初始化
+					test.echo('id: ' + ev.id,',type: ' + ev.type+"<br/>");
+				});
+				clipboard.on("clipboardClear",function(ev){
+					// flash 选择了文件
+					test.echo('id: ' + ev.id,',type: ' + ev.type + "<br/>");
+					files=ev.fileList;
+				});
+				clipboard.on("clipboardSet",function(ev){
+					// flash 取消选择文件
+					test.echo('id: ' + ev.id,',type: ' + ev.type+", event:" + S.JSON.stringify(ev) +"<br/>");
+				});
+				// 3.添加鼠标事件 监听
+				clipboard.on("mouseOver",function(ev){
+					test.echo('id: ' + ev.id,',type: ' + ev.type +"<br/>");
+				});
+				clipboard.on("mouseDown",function(ev){
+					test.echo('id: ' + ev.id,',type: ' + ev.type+"<br/>");
+					//TODO: set data here
+					
+				});
+				clipboard.on("mouseUp",function(ev){
+					test.echo('id: ' + ev.id,',type: ' + ev.type+"<br/>");
+				});
+				clipboard.on("mouseOut",function(ev){
+					test.echo('id: ' + ev.id,',type: ' + ev.type+"<br/>");
+				});
+				clipboard.on("click",function(ev){
+					test.echo('id: ' + ev.id,',type: ' + ev.type+"<br/>");
+				});
+				// init clipboard after events
+				clipboard.init();
+			}
+			
+			function test_createClearSWF(test){
+				var id = "swfclear",
+					clipboard,
+					config = S.merge(defConfig,{
+					attrs:{
+						width:43,
+						height:20
+					}
+				});
+				clipboard = new Clipboard(id,config);
+				//TODO: add events
+				// 1.添加常规 AJBridge 监听
+				// see  http://kissyteam.github.com/kissy-ajbridge/docs/ajbridge/index.html#events 
+				clipboard.on("init",function(ev){
+					test.echo('id: ' + ev.id,',type: ' + ev.type+"<br/>");
+				});
+				clipboard.on("addCallback",function(ev){
+					test.echo('id: ' + ev.id,',type: ' + ev.type+"<br/>");
+				});
+				clipboard.on("addCallbacks",function(ev){
+					test.echo('id: ' + ev.id,',type: ' + ev.type+"<br/>");
+				});
+				clipboard.on("swfReady",function(ev){
+					test.echo('id: ' + ev.id,',type: ' + ev.type+"<br/>");
+				});
+				// 2.添加常规 内容 监听
+				clipboard.on("contentReady",function(ev){
+					// flash 完成代码初始化
+					test.echo('id: ' + ev.id,',type: ' + ev.type+"<br/>");
+				});
+				clipboard.on("clipboardClear",function(ev){
+					// flash 选择了文件
+					test.echo('id: ' + ev.id,',type: ' + ev.type + "<br/>");
+					files=ev.fileList;
+				});
+				clipboard.on("clipboardSet",function(ev){
+					// flash 取消选择文件
+					test.echo('id: ' + ev.id,',type: ' + ev.type+", event:" + S.JSON.stringify(ev) +"<br/>");
+				});
+				// 3.添加鼠标事件 监听
+				clipboard.on("mouseOver",function(ev){
+					test.echo('id: ' + ev.id,',type: ' + ev.type +"<br/>");
+				});
+				clipboard.on("mouseDown",function(ev){
+					test.echo('id: ' + ev.id,',type: ' + ev.type+"<br/>");
+					//TODO: set data here
+					
+				});
+				clipboard.on("mouseUp",function(ev){
+					test.echo('id: ' + ev.id,',type: ' + ev.type+"<br/>");
+				});
+				clipboard.on("mouseOut",function(ev){
+					test.echo('id: ' + ev.id,',type: ' + ev.type+"<br/>");
+				});
+				clipboard.on("click",function(ev){
+					test.echo('id: ' + ev.id,',type: ' + ev.type+"<br/>");
+				});
+				// init clipboard after events
+				clipboard.init();
+			}
+		</script>
+		
+	</body>
+</html>
