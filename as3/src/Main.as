@@ -1,5 +1,6 @@
 ﻿package {
 	import com.xintend.local.clipboard.Clipboard;
+	import flash.utils.setTimeout;
 	//import com.xintend.local.clipboard.ClipboardMode;
 	import com.xintend.trine.ajbridge.AJBridge;
 	import flash.display.ActionScriptVersion;
@@ -21,8 +22,11 @@
 			
 			Security.allowDomain("*");
 			
-			if (stage) init();
-			else addEventListener(Event.ADDED_TO_STAGE, init);
+			//if (stage) init();
+			//else addEventListener(Event.ADDED_TO_STAGE, init);
+			
+			setTimeout(init, 100);
+			
 		}
 		
 		private function init(e:Event = null):void {

@@ -6,15 +6,15 @@
   <compiler>
     <define append="true">
       <name>CONFIG::debug</name>
-      <value>true</value>
-    </define>
-    <define append="true">
-      <name>CONFIG::release</name>
       <value>false</value>
     </define>
     <define append="true">
+      <name>CONFIG::release</name>
+      <value>true</value>
+    </define>
+    <define append="true">
       <name>CONFIG::timeStamp</name>
-      <value>'2010/10/25'</value>
+      <value>'2010/10/29'</value>
     </define>
     <source-path append="true">
       <path-element>D:\Work_Data\Lab\Kissy\github\clipboard\as3\src</path-element>
