@@ -115,7 +115,6 @@
 				clipboard.on("clipboardClear",function(ev){
 					// flash 选择了文件
 					test.echo('id: ' + ev.id,',type: ' + ev.type + "<br/>");
-					files=ev.fileList;
 				});
 				clipboard.on("clipboardSet",function(ev){
 					// flash 取消选择文件
@@ -127,11 +126,11 @@
 				});
 				clipboard.on("mouseDown",function(ev){
 					test.echo('id: ' + ev.id,',type: ' + ev.type+"<br/>");
-					//TODO: set data here
-					
+										
 				});
 				clipboard.on("mouseUp",function(ev){
-					test.echo('id: ' + ev.id,',type: ' + ev.type+"<br/>");
+					clipboard.setData('123');
+					
 				});
 				clipboard.on("mouseOut",function(ev){
 					test.echo('id: ' + ev.id,',type: ' + ev.type+"<br/>");
