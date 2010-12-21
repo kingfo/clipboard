@@ -1,0 +1,342 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<title>Clipboard Test</title>
+	</head>
+	<body>
+		<h2>Clipboard test</h2>
+		
+		<script src="../kissy/build/kissy.js"></script>
+		<script src="../kissy/build/flash/flash-pkg.js"></script>
+		
+		
+		<script src="../kissy-ajbridge/build/ajbridge/ajbridge-pkg.js"></script>
+		
+		<script src="clipboard.js"></script>
+		
+		<style type="text/css">
+			ul{padding:0;margin:0;}
+			ul li{list-style:none;}
+			.box {margin-top:10px;}
+			.box a{
+				display:inline-block;
+				width:40px;
+				text-align:center;
+				text-decoration:none;
+				border:1px solid #eaeaea;
+			}
+			.box li{
+				position:relative;
+				_display:inline;
+				float:left;
+				margin:0 5px;
+				width:40px;
+			}
+			.box li i {
+				position:absolute;
+				top:0;
+				left:0;
+				display:block;
+				padding:0 1px;
+				width:100%;
+				height:100%;
+			}
+			
+		</style>
+		
+		<p>Test</p>
+		<div id="tst"></div>
+		<textarea id="inputArea">ClipBoard组件展示</textarea>
+		<ul class="box">
+			<li class="copy">
+				<i id="swfcopy"> </i>
+				<a href="#" class="copy_btn" id="J_CopyBtn">Copy</a> 
+			</li>
+			<li class="cut">
+				<i id="swfcut"> </i>
+				<a href="#" class="cut_btn" id="J_CutBtn">Cut</a> 
+			</li>
+			<li class="paste">
+				<i id="swfpaste"> </i>
+				<a href="#" class="paste_btn" id="J_PasteBtn">Paste</a> 
+			</li>
+			<li class="clear">
+				<i id="swfclear"> </i>
+				<a href="#" class="clear_btn" id="J_ClearBtn">Clear</a> 
+			</li>
+		</ul>
+		
+		<script>
+		(function(){
+			var S=KISSY,
+				D = S.DOM,
+				F = S.Flash,
+				A = AJBridge,
+				Clipboard = A.Clipboard,
+				defConfig = {
+					src:"clipboard.swf",
+					params:{
+						bgcolor:"#FFCCCC",
+						wmode:"transparent",
+						scale:"showall"
+					},
+					hand:true,
+					btn:true
+				};
+				
+			var createCopySWF = function(){
+				var id = "swfcopy",
+					clipboard,
+					config = S.merge(defConfig,{
+					attrs:{
+						width:"100%",
+						height:22
+					}
+				});
+				
+				clipboard = new Clipboard(id,config);
+				//TODO: add events
+				
+				// 1.添加常规 AJBridge 监听
+				// see  http://kissyteam.github.com/kissy-ajbridge/docs/ajbridge/index.html#events 
+				clipboard.on("init",function(ev){
+				});
+				clipboard.on("addCallback",function(ev){
+					
+				});
+				clipboard.on("addCallbacks",function(ev){
+					
+				});
+				clipboard.on("swfReady",function(ev){
+					
+				});
+				// 2.添加常规 内容 监听
+				clipboard.on("contentReady",function(ev){
+					// flash 完成代码初始化
+					
+				});
+				clipboard.on("clipboardClear",function(ev){
+					files=ev.fileList;
+				});
+				clipboard.on("clipboardSet",function(ev){
+					// flash 取消选择文件
+					
+				});
+				// 3.添加鼠标事件 监听
+				clipboard.on("mouseOver",function(ev){
+					
+				});
+				clipboard.on("mouseDown",function(ev){
+				var oValue = D.get("#inputArea").value,flag = false;	
+					//mouseDown事件中不能使用alert函数，在chrome中会组织逻辑执行；
+					clipboard.setData(oValue);
+					if(clipboard.getData() !== oValue){
+						window.prompt('您的浏览器不支持自动复制',oValue);	
+					}else{
+						D.attr(D.get("#inputArea"),'data-content',clipboard.getData());
+					}
+					
+				});
+				clipboard.on("mouseUp",function(ev){
+					if(D.attr(D.get("#inputArea"),'data-content')){
+						alert('复制成功！\n现在您可以粘贴（Ctrl+V）');
+					}
+				});
+				clipboard.on("mouseOut",function(ev){
+					
+				});
+				clipboard.on("click",function(ev){
+					
+				});
+				// init clipboard after events
+				clipboard.init();
+			}();
+			
+			 var createCutSWF = function(){
+				var id = "swfcut",
+					clipboard,
+					config = S.merge(defConfig,{
+					attrs:{
+						width:"100%",
+						height:22
+					}
+				});
+				clipboard = new Clipboard(id,config);
+				//TODO: add events
+				// 1.添加常规 AJBridge 监听
+				// see  http://kissyteam.github.com/kissy-ajbridge/docs/ajbridge/index.html#events 
+				clipboard.on("init",function(ev){
+					
+				});
+				clipboard.on("addCallback",function(ev){
+					
+				});
+				clipboard.on("addCallbacks",function(ev){
+					
+				});
+				clipboard.on("swfReady",function(ev){
+					
+				});
+				// 2.添加常规 内容 监听
+				clipboard.on("contentReady",function(ev){
+					// flash 完成代码初始化
+				});
+				clipboard.on("clipboardClear",function(ev){
+					// flash 选择了文件
+					files=ev.fileList;
+				});
+				clipboard.on("clipboardSet",function(ev){
+					// flash 取消选择文件
+					
+				});
+				// 3.添加鼠标事件 监听
+				clipboard.on("mouseOver",function(ev){
+					
+				});
+				clipboard.on("mouseDown",function(ev){
+					var oArea = D.get("#inputArea"),oValue = oArea.value;				
+					clipboard.setData(oValue);
+					D.get("#inputArea").value = "";
+					if(clipboard.getData() !== oValue){
+						window.prompt('您的浏览器不支持自动复制',oValue);	
+					}else{
+						D.attr(oArea,'data-content',clipboard.getData());
+					}
+				});
+				clipboard.on("mouseUp",function(ev){
+					if(D.attr(D.get("#inputArea"),'data-content')){
+						alert('剪切成功！\n现在您可以粘贴（Ctrl+V）');
+					}
+				});
+				clipboard.on("mouseOut",function(ev){
+					
+				});
+				clipboard.on("click",function(ev){
+					
+				});
+				// init clipboard after events
+				clipboard.init();
+			}();
+			
+			 var createPasteSWF = function(){
+				var id = "swfpaste",
+					clipboard,
+					config = S.merge(defConfig,{
+					attrs:{
+						width:"100%",
+						height:22
+					}
+				});
+				clipboard = new Clipboard(id,config);
+				//TODO: add events
+				// 1.添加常规 AJBridge 监听
+				// see  http://kissyteam.github.com/kissy-ajbridge/docs/ajbridge/index.html#events 
+				clipboard.on("init",function(ev){
+					
+				});
+				clipboard.on("addCallback",function(ev){
+					
+				});
+				clipboard.on("addCallbacks",function(ev){
+					
+				});
+				clipboard.on("swfReady",function(ev){
+					
+				});
+				// 2.添加常规 内容 监听
+				clipboard.on("contentReady",function(ev){
+					// flash 完成代码初始化
+					
+				});
+				clipboard.on("clipboardClear",function(ev){
+					// flash 选择了文件
+					
+					files=ev.fileList;
+				});
+				clipboard.on("clipboardSet",function(ev){
+					// flash 取消选择文件
+					
+				});
+				// 3.添加鼠标事件 监听
+				clipboard.on("mouseOver",function(ev){
+					
+				});
+				clipboard.on("mouseDown",function(ev){
+					var oArea = D.get("#inputArea"),oData = D.attr(oArea,'data-content');
+					if(oData && oData !== ""){
+						oArea.value = D.attr(oArea,'data-content');
+						alert('粘贴成功！');
+					}else{
+						alert('粘贴板中无内容！');
+					}
+				});
+				clipboard.on("mouseUp",function(ev){
+					
+				});
+				clipboard.on("mouseOut",function(ev){
+					
+				});
+				clipboard.on("click",function(ev){
+					
+				});
+				// init clipboard after events
+				clipboard.init();
+			}();
+			
+			var createClearSWF = function(){
+				var id = "swfclear",
+					clipboard,
+					config = S.merge(defConfig,{
+					attrs:{
+						width:"100%",
+						height:22
+					}
+				});
+				clipboard = new Clipboard(id,config);
+				//TODO: add events
+				// 1.添加常规 AJBridge 监听
+				// see  http://kissyteam.github.com/kissy-ajbridge/docs/ajbridge/index.html#events
+				// 2.添加常规 内容 监听
+				clipboard.on("contentReady",function(ev){
+					// flash 完成代码初始化
+					
+				});
+				clipboard.on("clipboardClear",function(ev){
+					// flash 选择了文件
+					files=ev.fileList;
+				});
+				clipboard.on("clipboardSet",function(ev){
+					// flash 取消选择文件
+				});
+				// 3.添加鼠标事件 监听
+				clipboard.on("mouseOver",function(ev){
+				});
+				clipboard.on("mouseDown",function(ev){
+					var oArea = D.get("#inputArea"),oData = D.attr(oArea,'data-content');
+					//clear area value
+					if(oArea.value !== ""){
+						oArea.value = "";
+						clipboard.setData("");
+					}else{
+						return;
+					}
+				});
+				clipboard.on("mouseUp",function(ev){
+						alert('完成清除');
+				});
+				clipboard.on("mouseOut",function(ev){
+					
+				});
+				clipboard.on("click",function(ev){
+					
+				});
+				// init clipboard after events
+				clipboard.init();
+			}();
+
+		})()
+		</script>
+		
+	</body>
+</html>
